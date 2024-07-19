@@ -1,6 +1,6 @@
-# RAG based Chat with PDF: Your AI-powered Insight Generator from PDFs
+# Financial Document Insight retriever: Your AI-powered Insight Generator from PDFs
 
-RAG based Chat with PDF is a powerful Streamlit application designed to extract and analyze text from PDF documents, leveraging the advanced capabilities of Ollama Model LLAMA2, specifically the Gemini-PRO model. This tool uses a Retrieval-Augmented Generation (RAG) framework to offer precise, context-aware answers to user queries based on the content of uploaded documents.
+RAG based Chat with PDF is a powerful Streamlit application designed to extract and analyze text from finanical PDF documents, leveraging the advanced capabilities of Google GenAi Model, specifically the Gemini-PRO model. This tool uses a Retrieval-Augmented Generation (RAG) framework to offer precise, context-aware answers to user queries based on the content of uploaded documents.
 
 ## Features
 
