@@ -29,9 +29,8 @@ Follow these simple steps to interact with the chatbot:
 
 # This is the first API key input; no need to repeat it in the main function.
 # os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
-# api_key = st.text_input("Enter your Google API Key:",type="password", key="api_key_input")
+# api_key = st.text_input("Enter your Google API Key:",type="password", key="api_key_input") 
 api_key = os.getenv("GOOGLE_API_KEY")
-
 
 def get_pdf_text(pdf_docs):
     text = ""
@@ -99,11 +98,8 @@ def main():
         # Check if API key is provided before processing
         if st.button("Submit & Process", key="process_button") and api_key:
             with st.spinner("Processing..."):
-                st.write("Raw Text")
                 raw_text = get_pdf_text(pdf_docs)
-                st.write("Creating Chunks")
                 text_chunks = get_text_chunks(raw_text)
-                st.write("Vector Store")
                 get_vector_store(text_chunks, api_key)
                 st.success("Done")
 
