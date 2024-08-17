@@ -6,7 +6,3 @@ PyMuPDF
 chromadb
 faiss-cpu
 langchain_google_genai==1.0.3
-<<<<<<< HEAD
-=======
-python-dotenv
->>>>>>> e4bf1e0b826da4f4f5b810ac85ec9d2a6b4a8ab3
