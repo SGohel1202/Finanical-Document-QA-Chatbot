@@ -8,11 +8,11 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
 import os
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 
-# load_dotenv()
-# os.environ["LANGCHAIN_TRACING_V2"] = "true"
-# os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
+load_dotenv()
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
 
 st.set_page_config(page_title="Financial Document Insight retriever", layout="wide")
 
@@ -22,13 +22,15 @@ st.markdown("""
             
 ### How It Works
 Follow these simple steps to interact with the chatbot:
-1. **Insert The Google API Key**: To access the app enter Google API KEy.
-2. **Upload Your Documents**: The system accepts multiple PDF files at once, analyzing the content to provide comprehensive insights.
-3. **Ask a Question**: After processing the documents, ask any question related to the content of your uploaded documents for a precise answer.
+1. **Upload Your Documents**: The system accepts multiple PDF files at once, analyzing the content to provide comprehensive insights.
+2. **Ask a Question**: After processing the documents, ask any question related to the content of your uploaded documents for a precise answer.
 """)
-# Create a text input for the API key
-st.header("Your very own AI chatbot💁")
-api_key = st.text_input("Enter your Google API key:", type="password")
+
+
+# This is the first API key input; no need to repeat it in the main function.
+# os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
+# api_key = st.text_input("Enter your Google API Key:",type="password", key="api_key_input") 
+api_key = os.getenv("GOOGLE_API_KEY")
 
 def get_pdf_text(pdf_docs):
     text = ""
@@ -65,7 +67,7 @@ def get_conversational_chain():
 
     Answer:
     """
-    model = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.5, google_api_key=api_key)
+    model = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.2, google_api_key=api_key)
     prompt = PromptTemplate(template=prompt_template,input_variables=["context", "question"])
     chain = load_qa_chain(model, chain_type="stuff", prompt=prompt)
     return chain
@@ -78,25 +80,28 @@ def user_input(user_question, api_key):
     chain = get_conversational_chain()
     with st.spinner("Getting the Prompt"):
         response = chain({"input_documents": docs, "question": user_question}, return_only_outputs=True)
-        st.write("Reply: ", repr(response["output_text"]))
+        st.write("Reply: ", response["output_text"])
 
 
 def main():
-    st.title("Menu:")
-    pdf_docs = st.file_uploader(
-        "Upload your PDF Files and Click on the Submit & Process Button", accept_multiple_files=True, key="pdf_uploader")
-    # Check if API key is provided before processing
-    if st.button("Submit & Process", key="process_button") and api_key:
-        with st.spinner("Processing..."):
-            raw_text = get_pdf_text(pdf_docs)
-            text_chunks = get_text_chunks(raw_text)
-            get_vector_store(text_chunks, api_key)
-            st.success("Done")
-    
-    user_question = st.text_input("Ask a Question from the PDF Files", key="user_question")
+    st.header("Your very own AI chatbot💁")
 
+    user_question = st.text_input(
+        "Ask a Question from the PDF Files", key="user_question")
     if user_question and api_key:  # Ensure API key and user question are provided
         user_input(user_question, api_key)
+
+    with st.sidebar:
+        st.title("Menu:")
+        pdf_docs = st.file_uploader(
+            "Upload your PDF Files and Click on the Submit & Process Button", accept_multiple_files=True, key="pdf_uploader")
+        # Check if API key is provided before processing
+        if st.button("Submit & Process", key="process_button") and api_key:
+            with st.spinner("Processing..."):
+                raw_text = get_pdf_text(pdf_docs)
+                text_chunks = get_text_chunks(raw_text)
+                get_vector_store(text_chunks, api_key)
+                st.success("Done")
 
 
 if __name__ == "__main__":
