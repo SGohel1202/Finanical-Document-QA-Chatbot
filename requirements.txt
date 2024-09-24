@@ -3,7 +3,10 @@ google-generativeai
 langchain
 PyPDF2
 PyMuPDF
-chromadb
+# chromadb
 faiss-cpu
 langchain_google_genai==1.0.3
 python-dotenv
+streamlit_mic_recorder
+
+# pip install streamlit 
