@@ -30,7 +30,9 @@ Follow these simple steps to interact with the chatbot:
 # This is the first API key input; no need to repeat it in the main function.
 # os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
 # api_key = st.text_input("Enter your Google API Key:",type="password", key="api_key_input") 
-api_key = os.getenv("GOOGLE_API_KEY")
+# api_key = os.getenv("GOOGLE_API_KEY") ####this is correct 
+
+pi_key = os.getenv("GOOGLE_API_KEY")
 
 def get_pdf_text(pdf_docs):
     text = ""
@@ -42,8 +44,10 @@ def get_pdf_text(pdf_docs):
 
 
 def get_text_chunks(text):
-    text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=10000, chunk_overlap=1000)
+    # text_splitter = RecursiveCharacterTextSplitter(
+    #     chunk_size=10000, chunk_overlap=1000) -> correct
+text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=10000, chunk_overlap=1000
     chunks = text_splitter.split_text(text)
     return chunks
 
@@ -93,8 +97,10 @@ def main():
 
     with st.sidebar:
         st.title("Menu:")
-        pdf_docs = st.file_uploader(
-            "Upload your PDF Files and Click on the Submit & Process Button", accept_multiple_files=True, key="pdf_uploader")
+        # pdf_docs = st.file_uploader(
+        #     "Upload your PDF Files and Click on the Submit & Process Button", accept_multiple_files=True, key="pdf_uploader") -> correct
+    pdf_docs = st.file_uploader(
+            "Upload your PDF Files and Click on the Submit & Process Button, accept_multiple_files=True, key="pdf_uploader")
         # Check if API key is provided before processing
         if st.button("Submit & Process", key="process_button") and api_key:
             with st.spinner("Processing..."):
